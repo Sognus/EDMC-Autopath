@@ -1,5 +1,5 @@
 ## EDMC-Autopath
-EDMC-Autopath is a plugin for [Elite: Dangerous market connector](https://github.com/Marginal/EDMarketConnector). Plugin provides basic GUI to plan route using [neutron star plotter](https://www.spansh.co.uk/plotter/). If enabled by checkbox, plugin automatically update your system clipboard to next system in route. 
+EDMC-Autopath is a plugin for [Elite: Dangerous market connector](https://github.com/Marginal/EDMarketConnector). Plugin provides basic GUI to plan route using [neutron star plotter](https://www.spansh.co.uk/plotter/). If enabled by checkbox, plugin automatically update your system clipboard to next system in route. (see it in [action](https://www.youtube.com/watch?v=UDEgrHiYK24))
 
 ### Instalation
 1. Make sure you have [Elite: Dangerous market connector](https://github.com/Marginal/EDMarketConnector) installed

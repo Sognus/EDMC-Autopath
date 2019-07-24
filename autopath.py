@@ -153,7 +153,7 @@ class Autopath:
 
         # Checkbox clipboard
         self.checkbox_status = tk.IntVar(value=1)
-        self.checkbox_clipboard = tk.Checkbutton(self.frame, text="autoclipboard", variable=self.checkbox_status)
+        self.checkbox_clipboard = tk.Checkbutton(self.frame, text="Auto-copy to clipboard", variable=self.checkbox_status)
         self.checkbox_clipboard.grid(row=4, column=0, columnspan=2, sticky=tk.W)
 
         # Button

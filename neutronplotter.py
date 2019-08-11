@@ -10,9 +10,10 @@ API = "https://spansh.co.uk/api/"
 TIMEOUT = 30
 
 
-class Plotter:
+class NeutronPlotter:
 
-    def __init__(self):
+    def __init__(self, globals):
+        self.globals = globals
         self.origin = None
         self.destination = None
         self.efficiency = None
@@ -24,6 +25,7 @@ class Plotter:
         self.lock = Lock()
 
     def request_calculation(self, origin, destination, efficiency, ship_range):
+        self.globals.logger.debug("Neutron plotter -> calculation requested")
         self.origin = origin
         self.destination = destination
         self.efficiency = efficiency
@@ -31,6 +33,7 @@ class Plotter:
 
         # Prepare link for job queue
         link_job = API + "route?from={}&to={}&efficiency={}&range={}".format(origin, destination,efficiency, ship_range)
+        self.globals.logger.debug("Neutron -> request target is {}".format(link_job))
         # API calls for job queue
         request = requests.get(link_job).json()
         self.job = request["job"]

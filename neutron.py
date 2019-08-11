@@ -2,6 +2,7 @@ import Tkinter as tk
 import pyperclip
 from neutronplotter import NeutronPlotter
 import math
+from config import config
 
 
 class Neutron(tk.Frame):
@@ -16,26 +17,23 @@ class Neutron(tk.Frame):
 
     def update_clipboard(self, arrived_to):
         self.globals.logger.debug("Neutron -> Updating system clipboard")
-        # Check none
-        if self.checkbox_status is not None or self.checkbox_clipboard is None:
-            # Check for route ready and checkbox
-            if self.route_ready and self.checkbox_status.get() == 1:
-                self.globals.logger.debug("Neutron -> Route is ready and clipboard checkbox is checked")
-                try:
-                    index = self.route.index(arrived_to)
-                    total = len(self.route)
-                    percent = float(float(((index + 1)) / float(total)) * float(100))
-                    percent = math.floor(percent * 100)/100.0
-                    pyperclip.copy(self.route[index + 1])
-                    self.globals.logger.debug("Neutron -> system clipboard changed to {}".format(self.route[index + 1]))
-                    self.update_status("Clipboard updated to: ")
-                    self.status_append(self.route[index + 1])
-                    self.status_append("")
-                    self.status_append("{}/{} ({:.2f}%)".format(index+1, total, percent))
-                except Exception as e:
-                    print(e)
-                    self.globals.logger.debug("Neutron -> clipboard update failed > {}".format(str(e)))
-                    pass
+        if self.route_ready and config.getint("autopath_clipboard"):
+            self.globals.logger.debug("Neutron -> Route is ready and clipboard checkbox is checked")
+            try:
+                index = self.route.index(arrived_to)
+                total = len(self.route)
+                percent = float(float(((index + 1)) / float(total)) * float(100))
+                percent = math.floor(percent * 100)/100.0
+                pyperclip.copy(self.route[index + 1])
+                self.globals.logger.debug("Neutron -> system clipboard changed to {}".format(self.route[index + 1]))
+                self.update_status("Clipboard updated to: ")
+                self.status_append(self.route[index + 1])
+                self.status_append("")
+                self.status_append("{}/{} ({:.2f}%)".format(index+1, total, percent))
+            except Exception as e:
+                print(e)
+                self.globals.logger.debug("Neutron -> clipboard update failed > {}".format(str(e)))
+                pass
 
     def status_append(self, status_text):
         if self.label_status is not None:
@@ -158,18 +156,13 @@ class Neutron(tk.Frame):
                                            textvariable=efficiency_default)
         self.entry_efficiency.grid(row=3, column=1, sticky=tk.E)
 
-        # Checkbox clipboard
-        self.checkbox_status = tk.IntVar(value=1)
-        self.checkbox_clipboard = tk.Checkbutton(self, text="Auto-copy to clipboard", variable=self.checkbox_status)
-        self.checkbox_clipboard.grid(row=4, column=0, columnspan=2, sticky=tk.W)
-
         # Button
         self.button_calculate = tk.Button(self, text="Calculate", command=self.calculate_path)
-        self.button_calculate.grid(row=5, column=0, columnspan=2, pady=(3, 0))
+        self.button_calculate.grid(row=4, column=0, columnspan=2, pady=(3, 0))
 
         # Label Status
         self.label_status = tk.Label(self, text="Ready.. ", justify=tk.CENTER)
-        self.label_status.grid(row=6, column=0, columnspan=2, pady=(0, 10))
+        self.label_status.grid(row=5, column=0, columnspan=2, pady=(0, 10))
 
         # Frame layout
         self.columnconfigure(6, weight=1)

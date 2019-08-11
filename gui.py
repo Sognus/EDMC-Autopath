@@ -159,6 +159,7 @@ class PrefGUI:
     # Storage for checkboxes
     neutron = tk.IntVar(value=config.getint('autopath_neutron'))
     riches = tk.IntVar(value=config.getint('autopath_riches'))
+    clipboard = tk.IntVar(value=config.getint('autopath_clipboard'))
 
     @staticmethod
     def create_gui(parent, update_func, globals):
@@ -194,7 +195,15 @@ class PrefGUI:
         riches_button = nb.Checkbutton(frame, text=_('Enable road to riches feature'), variable=PrefGUI.riches,
                                        command=lambda update_func=update_func: PrefGUI.prefs_changed(update_func, globals))
         riches_button.grid(columnspan=2, padx=PrefGUI.BUTTONX, pady=(5, 0), sticky=tk.W)
-        globals.logger.debug("Settings neutron plotter created")
+        globals.logger.debug("Settings road to riches created")
+
+        # Checkbox for Copy to Clipboard
+        globals.logger.debug("Creating settings copy to clipboard checkbox")
+        clipboard_button = nb.Checkbutton(frame, text=_('Copy next waypoint to clipboard'), variable=PrefGUI.clipboard,
+                                       command=lambda update_func=update_func: PrefGUI.prefs_changed(update_func, globals))
+        clipboard_button.grid(columnspan=2, padx=PrefGUI.BUTTONX, pady=(5, 0), sticky=tk.W)
+        globals.logger.debug("Settings copy to clipboard created")
+
 
         return frame
 
@@ -208,6 +217,7 @@ class PrefGUI:
         globals.logger.debug("Saving settings..")
         config.set("autopath_neutron", PrefGUI.neutron.get())
         config.set("autopath_riches",  PrefGUI.riches.get())
+        config.set("autopath_clipboard", PrefGUI.clipboard.get())
         globals.logger.debug("Settings saved.")
 
         if update_func is not None and isinstance(update_func, types.FunctionType):

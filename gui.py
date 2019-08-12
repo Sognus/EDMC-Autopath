@@ -160,6 +160,7 @@ class PrefGUI:
     neutron = tk.IntVar(value=config.getint('autopath_neutron'))
     riches = tk.IntVar(value=config.getint('autopath_riches'))
     clipboard = tk.IntVar(value=config.getint('autopath_clipboard'))
+    overlay = tk.IntVar(value=config.getint('autopath_overlay'))
 
     @staticmethod
     def create_gui(parent, update_func, globals):
@@ -204,6 +205,14 @@ class PrefGUI:
         clipboard_button.grid(columnspan=2, padx=PrefGUI.BUTTONX, pady=(5, 0), sticky=tk.W)
         globals.logger.debug("Settings copy to clipboard created")
 
+        # Checkbox for Overlay
+        globals.logger.debug("Creating settings overlay checkbox")
+        overlay_button = nb.Checkbutton(frame, text=_('Use EDMCOverlay (if installed)'), variable=PrefGUI.overlay,
+                                          command=lambda update_func=update_func: PrefGUI.prefs_changed(update_func,
+                                                                                                        globals))
+        overlay_button.grid(columnspan=2, padx=PrefGUI.BUTTONX, pady=(5, 0), sticky=tk.W)
+        globals.logger.debug("Settings overlay created")
+
 
         return frame
 
@@ -218,6 +227,7 @@ class PrefGUI:
         config.set("autopath_neutron", PrefGUI.neutron.get())
         config.set("autopath_riches",  PrefGUI.riches.get())
         config.set("autopath_clipboard", PrefGUI.clipboard.get())
+        config.set("autopath_overlay", PrefGUI.overlay.get())
         globals.logger.debug("Settings saved.")
 
         if update_func is not None and isinstance(update_func, types.FunctionType):

@@ -102,7 +102,7 @@ def cmdr_data(data, is_beta):
             else:
                 globals.last_system = globals.current_system
                 globals.current_system = new
-                globals.neutron.update_clipboard(globals.current_system)
+                globals.neutron.update_location(globals.current_system)
 
 
 def journal_entry(cmdr, is_beta, system, station, entry, state):
@@ -115,4 +115,4 @@ def journal_entry(cmdr, is_beta, system, station, entry, state):
         else:
             globals.last_system = globals.current_system
             globals.current_system = entry["StarSystem"]
-            globals.neutron.update_clipboard(globals.current_system)
+            globals.neutron.update_location(globals.current_system)

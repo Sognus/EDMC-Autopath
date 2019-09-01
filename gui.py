@@ -6,6 +6,7 @@ from ttkHyperlinkLabel import HyperlinkLabel
 import types
 from neutron import Neutron
 from riches import Riches
+from blank import Blank
 
 
 class MainGUI(tk.Frame):
@@ -17,6 +18,7 @@ class MainGUI(tk.Frame):
     """
 
     def __init__(self, master, global_data, **kw):
+        self.BLANK_ID = 0
         self.NEUTRON_ID = 1
         self.RICHES_ID = 2
 
@@ -46,8 +48,25 @@ class MainGUI(tk.Frame):
         self.menu_frame = tk.Frame(self.main_frame, borderwidth=0, highlightthickness=0)
         self.setup_riches()
         self.setup_neutron()
+        self.setup_blank()
         self.menu_frame.pack(side="top", fill="both", expand=True, anchor="w")
         self.globals.logger.debug("GUI's menu frame created.")
+
+    def setup_blank(self):
+        """
+        Creates blank GUI page
+        """
+        
+        self.globals.logger.debug("Creating GUI blank frame..")
+        ID = self.BLANK_ID
+        
+        # MENU
+        # None
+        
+        # PAGE
+        self.pages[ID] = Blank(self.main_frame, self.globals)
+        
+        self.globals.logger.debug("GUI blank frame created.")
 
     def setup_neutron(self):
         """
@@ -102,7 +121,6 @@ class MainGUI(tk.Frame):
         self.globals.logger.debug("Menu buttons hidden.")
 
 
-
         # Neutron button shown
         if neutron:
             button_len = button_len + 1
@@ -127,7 +145,6 @@ class MainGUI(tk.Frame):
         else:
             if self.page_active == self.RICHES_ID:
                 self.page_active = 0
-
 
         self.menu_frame.pack_forget()
         if button_len > 2:
@@ -185,7 +202,7 @@ class PrefGUI:
         # Checkbox for Road To Riches
         globals.logger.debug("Creating settings neutron plotter checkbox...")
         neutron_button = nb.Checkbutton(frame, text=_('Enable neutron plotter feature'), variable=PrefGUI.neutron,
-                                        command=lambda update_func=update_func: PrefGUI.prefs_changed(update_func))
+                                        command=lambda update_func=update_func: PrefGUI.prefs_changed(update_func, globals))
         neutron_button.grid(columnspan=2, padx=PrefGUI.BUTTONX, pady=(5, 0), sticky=tk.W)
         globals.logger.debug("Settings neutron plotter created.")
 
@@ -209,8 +226,12 @@ class PrefGUI:
         config.set("autopath_neutron", PrefGUI.neutron.get())
         config.set("autopath_riches",  PrefGUI.riches.get())
         globals.logger.debug("Settings saved.")
-
+        
+        globals.logger.debug("Trying to invoke GUI update function.")
+        
         if update_func is not None and isinstance(update_func, types.FunctionType):
             globals.logger.debug("Calling GUI update function...")
             update_func()
             globals.logger.debug("GUI update function completed")
+        else:
+            globals.logger.debug("GUI update function cannot be invoked")

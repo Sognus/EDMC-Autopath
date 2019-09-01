@@ -2,6 +2,7 @@ from gui import *
 import sys
 import logging
 import os
+from config import config
 
 # Plugin name
 PLUGIN_NAME = 'Autopath'
@@ -15,6 +16,7 @@ globals.gui = None
 
 def gui_update():
     if globals.gui is not None:
+        globals.logger.debug("Updating GUI")
         globals.gui.update()
 
 
@@ -53,6 +55,15 @@ def plugin_start(plugin_dir):
 
     globals.current_system = ""
     globals.last_system = ""
+    
+    # Checking existence of configuration values
+    first_run_done = config.getint("autopath_first_run_done")
+    if first_run_done == 0:
+        globals.logger.info("First run of application detected")
+        config.set("autopath_neutron", 1)
+        config.set("autopath_riches",  1)
+        config.set("autopath_first_run_done", 1)
+    
     print('{}: PLUGIN STARTED'.format(PLUGIN_NAME))
     globals.logger.info('{}: PLUGIN STARTED'.format(PLUGIN_NAME))
 

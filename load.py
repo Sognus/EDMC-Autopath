@@ -68,6 +68,11 @@ def plugin_start(plugin_dir):
     globals.logger.info('{}: PLUGIN STARTED'.format(PLUGIN_NAME))
 
 
+def plugin_start3(plugin_dir):
+    # Python 3 mode
+    return plugin_start(plugin_dir)
+
+
 def plugin_stop():
     """
     EDMC is closing

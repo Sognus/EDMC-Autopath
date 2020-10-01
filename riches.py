@@ -1,6 +1,11 @@
-import Tkinter as tk
 import pyperclip
 
+try:
+    # Python 2
+    import Tkinter as tk
+except ModuleNotFoundError:
+    # Python 3
+    import tkinter as tk
 
 class Riches(tk.Frame):
 

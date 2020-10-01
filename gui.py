@@ -1,5 +1,3 @@
-import ttk
-import Tkinter as tk
 from config import config
 import myNotebook as nb
 from ttkHyperlinkLabel import HyperlinkLabel
@@ -7,6 +5,15 @@ import types
 from neutron import Neutron
 from riches import Riches
 from blank import Blank
+
+try:
+    # Python 2
+    import Tkinter as tk
+    import ttk
+except ModuleNotFoundError:
+    # Python 3
+    import tkinter as tk
+    import tkinter.ttk as ttk
 
 
 class MainGUI(tk.Frame):

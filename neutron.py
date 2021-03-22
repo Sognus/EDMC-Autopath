@@ -1,8 +1,13 @@
-import Tkinter as tk
 import pyperclip
 from neutronplotter import NeutronPlotter
 import math
 
+try:
+    # Python 2
+    import Tkinter as tk
+except ModuleNotFoundError:
+    # Python 3
+    import tkinter as tk
 
 class Neutron(tk.Frame):
 
